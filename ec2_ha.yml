@@ -1,0 +1,25 @@
+- hosts: wb
+ tasks:
+ - package:
+     name: "httpd"
+     state: "present"
+ - copy:
+     content: "HELLO FROM {{ ansible_hostname }}"
+     dest: "/var/www/html/index.html"
+ - service:
+     name: "httpd"
+     state: started
+
+- hosts: lb
+  tasks:
+  - package:
+      name: "haproxy"
+      state: present
+  - template:
+      src: "ha.conf"
+      dest: "/etc/haproxy/haproxy.cfg"
+  - service:
+      name: "haproxy"
+      state: "started"
+
+ 

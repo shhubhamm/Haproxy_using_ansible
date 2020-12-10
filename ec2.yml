@@ -1,0 +1,29 @@
+- hosts: localhost
+  tasks:
+  - ec2:
+        region: ap-south-1
+        key_name: key
+        instance_type: t2.micro
+        image: ami-0a9d27a9f4f5c0efc
+        count: 1
+        instance_tags:
+          name: "Load_Balancer"
+        group_id: sg-id
+        aws_access_key: access key
+        aws_secret_key: secret key
+        vpc_subnet_id: subnet-id
+
+  - ec2:
+        region: ap-south-1
+        key_name: key
+        instance_type: t2.micro
+        image: ami-0a9d27a9f4f5c0efc
+        count: 3
+        instance_tags:
+          name: "Web_Server"
+        group_id: sg-id
+        aws_access_key: access key
+        aws_secret_key: secret key
+        vpc_subnet_id: subnet-id
+
+
