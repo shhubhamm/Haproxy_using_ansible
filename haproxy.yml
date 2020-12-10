@@ -1,0 +1,42 @@
+- hosts: slaves
+  tasks:
+  - file:
+      path: "/dvd/"
+      state: directory
+  - mount:
+      src: "/dev/cdrom"
+      path: "/dvd/"
+      fstype: iso9660
+      state: mounted
+  - yum_repository:
+      baseurl: "file:///dvd/AppStream"
+      name: AppStream
+      description: Yum For AppStream
+      gpgcheck: no
+  - yum_repository:
+      baseurl: "file:///dvd/BaseOS"
+      name: BaseOS
+      description: Yum For BaseOS
+      gpgcheck: no
+  - package:
+      name: "httpd"
+      state: "present"
+  - copy:
+      content: "HELLO FROM {{ ansible_hostname }}"
+      dest: "/var/www/html/index.html"
+  - service:
+      name: "httpd"
+      state: started
+
+- hosts: localhost
+  tasks:
+  - package:
+      name: "haproxy"
+      state: "present"
+  - template:
+      src: "ha.conf"
+      dest: "/etc/haproxy/haproxy.cfg"
+  - service:
+      name: "haproxy"
+      state: "started"
+
